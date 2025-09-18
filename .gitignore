@@ -28,3 +28,7 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
+
+
+# Ignorar todo o conteúdo da pasta uploads
+/uploads/*
