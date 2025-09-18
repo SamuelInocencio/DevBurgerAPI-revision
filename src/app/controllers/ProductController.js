@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Product from '../models/Product';
 
 
 
@@ -12,15 +13,42 @@ class ProductController {
         })
 
         try {
-            schema.validateSync(request.body, { abortEarly: false });
-            } catch (err) {
-            return response.status(400).json({ error: err.errors });
-            }
+            schema.validateSync(request.body, {
+                abortEarly: false
+            });
+        } catch (err) {
+            return response.status(400).json({
+                error: err.errors
+            });
+        }
 
-        return response.status(201).json({
-            message: "Product Controller Ok!"
+        const {
+            filename: path
+        } = request.file;
+        const {
+            name,
+            price,
+            category_id,
+            offer
+        } = request.body;
+
+        const product = await Product.create({
+            name,
+            price,
+            category_id,
+            path,
+            offer,
         });
+
+        return response.status(201).json(product);
     }
+
+    async index(request, response) {
+        const products = await Product.findAll();
+
+        return response.json(products);
+    }
+
 }
 
 export default new ProductController();
