@@ -1,5 +1,8 @@
-import { v4 } from 'uuid';
+import {
+  v4
+} from 'uuid';
 import * as Yup from 'yup';
+
 
 import User from '../models/User';
 
@@ -13,12 +16,21 @@ class UserController {
     });
 
     try {
-      schema.validateSync(request.body, { abortEarly: false });
+      schema.validateSync(request.body, {
+        abortEarly: false
+      });
     } catch (err) {
-      return response.status(400).json({ error: err.errors });
+      return response.status(400).json({
+        error: err.errors
+      });
     }
 
-    const { name, email, password, admin } = request.body;
+    const {
+      name,
+      email,
+      password,
+      admin
+    } = request.body;
 
     const userExists = await User.findOne({
       where: {
@@ -28,7 +40,9 @@ class UserController {
 
 
     if (userExists) {
-      return response.status(409).json({ error: 'User already exists' });
+      return response.status(409).json({
+        error: 'User already exists'
+      });
     }
 
     const user = await User.create({
@@ -43,7 +57,7 @@ class UserController {
       id: user.id,
       name,
       email,
-      admin,
+      admin,      
     });
   }
 }
