@@ -6,6 +6,7 @@ import authMiddleware from './app/middlewares/auth'
 import UserController from './app/controllers/UserController';
 import SessionController from "./app/controllers/SessionController";
 import ProductController from "./app/controllers/ProductController";
+import CategoryController from './app/controllers/CategoryController';
 
 const routes = new Router();
 
@@ -19,5 +20,8 @@ routes.use(authMiddleware);
 
 routes.post('/products', upload.single('file'), ProductController.store);
 routes.get('/products', ProductController.index);
+
+routes.post('/categories', upload.single('file'), CategoryController.store);
+routes.get('/categories', CategoryController.index);
 
 export default routes;
