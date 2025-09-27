@@ -76,15 +76,32 @@ class OrderController {
     }
 
     async index(request, response) {
+        const orders = await Order.find();
 
-
-         return response.status(201).json({message: "Rota Order.index acessada com sucesso!"});
+         return response.json(orders);
     }
 
     async update(request, response) {
 
+        const schema = Yup.object({
+			status: Yup.string().required(),
+		});
 
-         return response.status(201).json({message: "Rota Order.update acessada com sucesso!"});
+		try {
+			schema.validateSync(request.body, { abortEarly: false });
+		} catch (err) {
+			return response.status(400).json({ error: err.errors });
+		}
+            const { id } = request.params;
+            const { status } = request.body;
+           
+            try {
+                await Order.updateOne({ _id: id }, { status });
+            } catch (err) {
+                return response.status(400).json({ error: err.message });
+            }
+
+         return response.json({ message: "Status updated sucessfully" });
     }
 }
 
